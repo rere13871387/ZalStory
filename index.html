@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Scroll with Sound</title>
+    <style>
+        @font-face {
+  font-family: 'Sahel';
+  font-style: normal;
+  font-weight: normal;
+  src: url('fonts/Sahel/Sahel/Sahel-FD.eot');
+  src: url('fonts/Sahel/Sahel/Sahel-FD.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Sahel/Sahel/Sahel-FD.woff2') format('woff2'),
+    url('fonts/Sahel/Sahel/Sahel-FD.woff') format('woff'),
+    url('fonts/Sahel/Sahel/Sahel-FD.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sahel';
+  font-style: normal;
+  font-weight: bold;
+  src: url('fonts/Sahel/Sahel-Bold/Sahel-Bold-FD.eot');
+  src: url('fonts/Sahel/Sahel-Bold/Sahel-Bold-FD.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Sahel/Sahel-Bold/Sahel-Bold-FD.woff2') format('woff2'),
+    url('fonts/Sahel/Sahel-Bold/Sahel-Bold-FD.woff') format('woff'),
+    url('fonts/Sahel/Sahel-Bold/Sahel-Bold-FD.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sahel';
+  font-style: normal;
+  font-weight: lighter;
+  src: url('fonts/Sahel/Sahel-Light/Sahel-Light-FD.eot');
+  src: url('fonts/Sahel/Sahel-Light/Sahel-Light-FD.eot?#iefix') format('embedded-opentype'),
+    url('fonts/Sahel/Sahel-Light/Sahel-Light-FD.woff2') format('woff2'),
+    url('fonts/Sahel/Sahel-Light/Sahel-Light-FD.woff') format('woff'),
+    url('fonts/Sahel/Sahel-Light/Sahel-Light-FD.ttf') format('truetype');
+}
+
+* {
+    font-family: sahel !important;
+}
+
+        .background {
+            background-image: url('intro.webp');
+            /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Glass effect container */
+        .glass {
+            width: 100%;
+            height: 650px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            text-align: center;
+        }
+
+        body {
+            /* overflow-y: hidden; */
+            /* Hide vertical scrollbar */
+            overflow-x: hidden;
+            overflow-y: hidden;
+            /* Hide horizontal scrollbar */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #82837E;
+            opacity: 0.8;
+            background-image: radial-gradient(#444cf7 0.5px, transparent 0.5px), radial-gradient(#444cf7 0.5px, #82837E 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+
+        #content {
+            height: 4000px;
+            /* Simulating a long page */
+            padding: 20px;
+            background-color: #82837E;
+        }
+
+        img {
+            border-radius: 40%;
+        }
+
+        button {
+  border-radius: 4px;
+  background-color: #5ca1e1;
+  border: none;
+  color: #fff;
+  text-align: center;
+  font-size: 32px;
+  padding: 16px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 36px;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0,.7);
+}
+
+button{
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+button:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;  
+  top: 14px;
+  right: -20px;
+  transition: 0.5s;
+}
+
+button:hover{
+  padding-right: 24px;
+  padding-left:8px;
+}
+
+button:hover:after {
+  opacity: 1;
+  right: 10px;
+}
+
+        .btn-grad {
+            background-image: linear-gradient(to right, #c0c0aa 0%, #1cefff 51%, #c0c0aa 100%);
+            margin: 10px;
+            padding: 15px 45px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            box-shadow: 0 0 20px #eee;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .btn-grad:hover {
+            background-position: right center;
+            /* change the direction of the change here */
+            color: #fff;
+            text-decoration: none;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Droid Sans", sans-serif;
+        }
+
+        p {
+            line-height: 4.5 !important;
+            text-indent: 30px;
+            direction: rtl;
+            text-align: right;
+            font-size: 20px;
+            color: #1D1D1D;
+            font-weight: 900;
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            top: 0px;
+            left: 50%;
+            bottom: 0px;
+            transform: translateX(-50%);
+            width: 4px;
+            background-color: #fff;
+        }
+
+        body .entries {
+            width: calc(100% - 80px);
+            max-width: 800px;
+            margin: auto;
+            position: relative;
+            left: -5px;
+        }
+
+        body .entries .entry {
+            width: calc(50% - 80px);
+            float: left;
+            padding: 20px;
+            clear: both;
+            text-align: right;
+        }
+
+        body .entries .entry:not(:first-child) {
+            margin-top: -60px;
+        }
+
+        body .entries .entry .title {
+            font-size: 32px;
+            margin-bottom: 120px;
+            position: relative;
+            color: #fff;
+        }
+
+        body .entries .entry .title:before {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 4px solid #ffffff;
+            background-color: #1D1D1D;
+            border-radius: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -73px;
+            z-index: 1000;
+        }
+
+        body .entries .entry .title.big:before {
+            width: 24px;
+            height: 24px;
+            transform: translate(8px, -50%);
+        }
+
+        body .entries .entry .body {
+            color: #aaa;
+        }
+
+        body .entries .entry .body p {
+            line-height: 1.4em;
+        }
+
+        body .entries .entry:nth-child(2n) {
+            text-align: left;
+            float: right;
+        }
+
+        body .entries .entry:nth-child(2n) .title:before {
+            left: -63px;
+        }
+
+        body .entries .entry:nth-child(2n) .title.big:before {
+            transform: translate(-8px, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background">
+        <div class="glass"> <br> <br><br><br><br><br><br>
+            <button onclick="scrollToEndWithSound(100000)">شروع ماجراجویی</button>
+        </div>
+    </div>
+    <div id="content">
+
+
+
+
+
+
+
+
+
+
+
+        <div class="entries">
+            <div class="entry">
+                <div class="title"></div>
+                <div class="body">
+                    <p>در دوردست‌های سرزمینی به نام پارس، پادشاهی به نام سام با قدرت فراوان حکومت می‌کرد. با اینکه
+                        پادشاه سخت‌گیر و مقتدر بود، اما دل نرمی نسبت به کودکان داشت. او همیشه آرزو داشت روزی فرزندی
+                        داشته باشد تا تاج و تخت خود را با او سهیم شود.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title"></div>
+                <div class="body">
+                    <p>دعای پادشاه سام بالاخره پس از مدت‌ها انتظار مستجاب شد، و همسرش پسری به دنیا آورد. خانواده سلطنتی
+                        از خوشحالی سرشار شدند و جشن‌ها فوراً در سرتاسر پادشاهی آغاز شد. اما این فضای شاد به سرعت به
+                        پایان رسید وقتی که نوزاد را دیدند.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title"><img width="300px" src="gif/1.gif" alt=""></div>
+                <div class="body">
+                    <p>پادشاه سام شوکه و خشمگین شد. در پادشاهی او، نوزادی با موی سفید به عنوان نشانه‌ای شوم تلقی می‌شد.
+                        پادشاه که از ظاهر غیرعادی پسرش منزجر شده بود، او را «زال» نامید که به معنای «سفید» بود. سپس،
+                        پادشاه تصمیم وحشتناکی گرفت.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title"><img width="300px" src="gif/3.gif" alt=""></div>
+                <div class="body">
+                    <p>او به مردانش دستور داد که زال را به کوه‌های سرد و خطرناک البرز ببرند و او را به دست سرنوشت وحشی
+                        طبیعت بسپارند. شاید قلبش به درد آمده بود، اما پایبندی او به سنت‌های عجیب پیروز شد، و او پشت به
+                        تنها پسرش کرد.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title"></div>
+                <div class="body">
+                    <p>در میان کوه‌های بزرگ، صدای گریه‌های زال در سکوت طنین انداخت و موجودی افسانه‌ای و جادویی به نام
+                        سیمرغ را به سوی خود کشاند. سیمرغ، پرنده‌ای شبیه به ققنوس با پرهایی درخشان و قلبی سرشار از
+                        مهربانی بود.</p>
+                </div>
+            </div>
+            <div class="entry">
+                <div class="title"><img width="300px" src="gif/2.gif" alt=""></div>
+                <div class="body">
+                    <p>سیمرغ نوزاد رها شده را یافت، که در حال لرزیدن و گریه کردن بود. غرایز مادری او بیدار شد و زال را
+                        زیر حمایت خود گرفت. او زال را در بال‌های گرمش پیچید و به او غذا داد. سیمرغ زال را به فرزندی
+                        پذیرفت و از او مراقبت کرد، گویی که او فرزند خودش باشد.</p>
+                </div>
+            </div>
+
+            <div class="entry">
+                <div class="title">
+                    <div class="typeJsWrapper">
+                        <div class="container">
+                            <h1 class="typeJsText" data-typetext="این داستان ادامه دارد"></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                </div>
+            </div>
+
+
+            <script>// type js plugin
+                let typeJsText = document.querySelector(".typeJsText");
+                let textArray = typeJsText.dataset.typetext.split("");
+                let counter = -1;
+
+                typeJsText.innerHTML = "";
+
+                function typeJs() {
+                    if (counter < typeJsText.dataset.typetext.length) {
+                        counter++;
+                        typeJsText.innerHTML += typeJsText.dataset.typetext.charAt(counter);
+                        textArray = typeJsText.dataset.typetext.split("");
+                    } else {
+                        textArray.pop();
+                        typeJsText.innerHTML = textArray.join("");
+                        if (textArray.length == 0) {
+                            counter = -1;
+                        }
+                    }
+                }
+
+                setInterval(() => {
+                    typeJs();
+                }, 100);
+            </script>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <!-- Sound file -->
+    <audio id="scrollSound" src="1.mp3"></audio>
+
+
+    <script>
+        function scrollToEndWithSound(duration) {
+            const audio = document.getElementById("scrollSound");
+            const totalHeight = document.body.scrollHeight - window.innerHeight;
+            let start = window.pageYOffset;
+            let startTime = null;
+
+            // Play the sound when the scroll starts
+            audio.currentTime = 0;
+            audio.play();
+
+            function smoothScroll(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const run = ease(timeElapsed, start, totalHeight - start, duration);
+
+                window.scrollTo(0, run);
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(smoothScroll);
+                } else {
+                    // Stop the sound after scrolling ends
+                    audio.pause();
+                }
+            }
+
+            function ease(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+
+            requestAnimationFrame(smoothScroll);
+        }
+    </script>
+</body>
+
+</html>
